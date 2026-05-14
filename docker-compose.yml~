@@ -1,0 +1,17 @@
+services:
+  db:
+    image: mariadb:10.11  # Usar uma versão específica é mais seguro que 'latest'
+    container_name: mariadb_django
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: root_password_segura
+      MARIADB_DATABASE: boituva_landmarks  # O banco já será criado automaticamente
+      MARIADB_USER: django_user
+      MARIADB_PASSWORD: django_password_segura
+    ports:
+      - "3306:3306"  # Mapeia a porta 3306 do seu Linux para a 3306 do container
+    volumes:
+      - mariadb_data:/var/lib/mysql  # Persistência: os dados não somem se o container cair
+
+volumes:
+  mariadb_data:
