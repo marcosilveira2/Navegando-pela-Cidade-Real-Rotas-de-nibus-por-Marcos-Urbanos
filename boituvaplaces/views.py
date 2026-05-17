@@ -1,12 +1,20 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.urls import get_resolver, reverse
 from boituvaplaces.models import *
 from .import_data import importador
 
 
 # data = importador()
 def index(request):
-    return HttpResponse("Bem vindo a lugares em Boituva!")
+    resolver = get_resolver()
+    html_simples = "<h1>Links de importação do banco de dados</h1><ul>"
+    url_rotas = request.build_absolute_uri(reverse("importa_rotas"))
+    url_pontos = request.build_absolute_uri(reverse("importa_pontos"))
+    link_rotas = f'<li><a href="{url_rotas}">importa_rotas</a></li>'
+    link_pontos = f'<li><a href="{url_pontos}">importa_pontos</a></li>'
+    html_simples += f'{link_rotas} {link_pontos} </ul>'
+    return HttpResponse(html_simples)
 
 
 def importa_rotas(request):
@@ -48,4 +56,4 @@ def importa_pontos(request):
         if created == False:
             print(f'ponto {ponto} já existe')
         else: print(f'adicionado ponto {ponto}')
-    return HttpResponse("Teste")
+    return HttpResponse("Importação concluída!")
