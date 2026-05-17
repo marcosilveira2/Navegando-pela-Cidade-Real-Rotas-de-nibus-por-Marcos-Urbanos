@@ -2,7 +2,7 @@ from django.db import models
 
 # Models que definem o banco de dados
 
-class Rotas(models.Model):
+class Rota(models.Model):
     codigo = models.CharField(max_length=10, unique=True) 
     nome  = models.CharField(max_length=200)
 
@@ -10,9 +10,9 @@ class Rotas(models.Model):
         return f"{self.codigo} - {self.nome}"    
 
 
-class ParadasOnibus(models.Model):
+class ParadaOnibus(models.Model):
     endereco = models.CharField(max_length=200)
-    rotas = models.ManyToManyField(Rotas, related_name='pontos')
+    rotas = models.ManyToManyField(Rota, related_name='pontos')
     latitude = models.FloatField(default=0.0)
     longitude = models.FloatField(default=0.0)
 
