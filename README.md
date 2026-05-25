@@ -18,7 +18,7 @@ git clone [https://github.com/seu-usuario/seu-repositorio.git](https://github.co
 cd seu-repositorio
 ```
 
-###3. Configurar as Variáveis de Ambiente
+### 3. Configurar as Variáveis de Ambiente
 
 O projeto utiliza variáveis de ambiente para manter senhas seguras.
 
@@ -36,21 +36,21 @@ MARIADB_PASSWORD=
 
 
 
-###4. Subir os Containers (Banco de Dados e Aplicação)
+### 4. Subir os Containers (Banco de Dados e Aplicação)
 
 Com o Docker instalado, execute o comando abaixo para baixar as imagens e iniciar o MariaDB e o Django:
 Bash
 
 docker-compose up --build
 
-###5. Executar as Migrações do Banco
+### 5. Executar as Migrações do Banco
 
 Em um novo terminal, execute as migrações para criar as tabelas no MariaDB:
 Bash
 
 docker-compose exec web python manage.py migrate
 
-###6. Criar Usuário Administrador (Opcional)
+### 6. Criar Usuário Administrador (Opcional)
 
 Para acessar o painel administrativo do Django (http://localhost:8000/admin), crie um superusuário:
 Bash
