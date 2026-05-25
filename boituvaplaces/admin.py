@@ -5,3 +5,4 @@ from .models import *
 admin.site.register(Rota)
 admin.site.register(ParadaOnibus)
 admin.site.register(CategoriaMarco)
+admin.site.register(Local)

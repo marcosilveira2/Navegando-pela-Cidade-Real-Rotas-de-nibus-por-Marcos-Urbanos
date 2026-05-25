@@ -12,9 +12,11 @@ def index(request):
     html_simples = "<h1>Links de importação do banco de dados</h1><ul>"
     url_rotas = request.build_absolute_uri(reverse("importa_rotas"))
     url_pontos = request.build_absolute_uri(reverse("importa_pontos"))
+    url_locais = request.build_absolute_uri(reverse("importa_locais"))
     link_rotas = f'<li><a href="{url_rotas}">importa_rotas</a></li>'
     link_pontos = f'<li><a href="{url_pontos}">importa_pontos</a></li>'
-    html_simples += f'{link_rotas} {link_pontos} </ul>'
+    link_locais = f'<li><a href="{url_locais}">importa_locais</a></li>'
+    html_simples += f'{link_rotas} {link_pontos} {link_locais}</ul>'
     return HttpResponse(html_simples)
 
 
@@ -74,3 +76,24 @@ def importa_pontos(request):
             print(f'Adicionado ponto: "{endereco_nome}"')
 
     return HttpResponse("Importação concluída com sucesso!")
+
+def importa_locais(request):
+    locais = importador("lista_de_locais_1.json")
+    resposta = type(locais)
+    for local in locais:
+        print(local['tipo'])
+        lng = local['lng']
+        lat = local['lat']
+        ponto_geometrico = Point(lng, lat, srid=4326)
+        local_cidade, created = Local.objects.get_or_create(
+            nome=local['nome'],
+            endereco=local['endereco'],
+            coordenadas=ponto_geometrico,
+            tipo_local=local['tipo']
+        )
+        if not created:
+            print(f"local {local['nome']} já existia")
+        else:
+            print(f"adicionado{local['nome']}")
+
+    return HttpResponse("Locais adicionados ao banco de dados!")

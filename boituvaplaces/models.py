@@ -15,6 +15,9 @@ class ParadaOnibus(models.Model):
     endereco = models.CharField(max_length=200)
     rotas = models.ManyToManyField(Rota, related_name='pontos')
     coordenadas = models.PointField(default= Point(0.0, 0.0), srid=4326)
+    class Meta:
+        verbose_name = "Parada de Ônibus"
+        verbose_name_plural = "Paradas de Ônibus"
 
     def __str__(self):
         return self.endereco
@@ -23,6 +26,10 @@ class ParadaOnibus(models.Model):
 class CategoriaMarco(models.Model):
     # Ex: "Visual", "Turístico", "Funcional"
     nome = models.CharField(max_length=50, unique=True)
+    class Meta:
+        verbose_name = "Categoria de Marco"
+        verbose_name_plural = "Categorias de Marco"
+
 
     def __str__(self):
         return self.nome
@@ -33,6 +40,7 @@ class Local(models.Model):
     coordenadas = models.PointField(default=Point(0.0, 0.0), srid=4326)
     e_marco = models.BooleanField(default=False, db_index=True)
     tipo_marco = models.ManyToManyField(CategoriaMarco, blank=True, related_name='locais')
+    tipo_local = models.CharField(max_length=200, blank=True)
 
     class Meta:
         verbose_name = "Local"
