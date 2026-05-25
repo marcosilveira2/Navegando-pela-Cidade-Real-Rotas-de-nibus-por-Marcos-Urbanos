@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.urls import get_resolver, reverse
 from boituvaplaces.models import *
 from .import_data import importador
+from django.contrib.gis.geos import Point
 
 
 # data = importador()
@@ -33,27 +34,43 @@ def importa_rotas(request):
 
     return HttpResponse(f'{retorno}')
 
-
 def importa_pontos(request):
     pontos = importador("pontos_onibus.json")
-    for ponto, info in pontos.items():
-        # print(ponto, len(pontos[ponto]))
-        if type(info[0]) == list:
-            rotas = info[0] # pega a lista de rotas que passam por este ponto
+
+    for endereco_nome, info in pontos.items():
+        endereco_nome = endereco_nome.lstrip('"')
+        endereco_nome = endereco_nome.rstrip('",')
+        if isinstance(info[0], list):
+            nomes_rotas = info[0]
             lat = info[1]["latitude"]
             lng = info[2]["longitude"]
+            ponto_geometrico = Point(lng, lat, srid=4326)  # Mantendo Longitude primeiro (X, Y)
         else:
-            rotas = info
-            lat = 0.0
-            lng = 0.0
-        print(ponto, rotas, lat, lng)
+            nomes_rotas = info
+            ponto_geometrico = Point(0.0, 0.0, srid=4326)
 
-        parada, created = ParadaOnibus.objects.get_or_create(endereco=ponto,
-                                                             defaults={"latitude": lat,
-                                                                       "longitude": lng})
+        parada, created = ParadaOnibus.objects.get_or_create(
+            endereco=endereco_nome,
+            defaults={"coordenadas": ponto_geometrico})
+        objetos_rotas = []
 
-        parada.rotas.set(rotas)
-        if created == False:
-            print(f'ponto {ponto} já existe')
-        else: print(f'adicionado ponto {ponto}')
-    return HttpResponse("Importação concluída!")
+        if isinstance(nomes_rotas, str):
+            nomes_rotas = [nomes_rotas]
+
+        for nome_rota in nomes_rotas:
+            try:
+                rota_obj = Rota.objects.get(codigo=nome_rota)
+                objetos_rotas.append(rota_obj)
+            except Rota.DoesNotExist:
+                print(f"Rota{nome_rota} não existe")
+
+        parada.rotas.set(objetos_rotas)
+
+        if not created:
+            parada.coordenadas = ponto_geometrico
+            parada.save()
+            print(f'Ponto "{endereco_nome}" já existia (coordenadas atualizadas).')
+        else:
+            print(f'Adicionado ponto: "{endereco_nome}"')
+
+    return HttpResponse("Importação concluída com sucesso!")

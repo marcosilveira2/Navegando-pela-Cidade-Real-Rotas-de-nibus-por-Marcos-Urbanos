@@ -1,4 +1,5 @@
 from django.contrib.gis.db import models
+from django.contrib.gis.geos import Point
 
 # Models que definem o banco de dados
 
@@ -13,9 +14,7 @@ class Rota(models.Model):
 class ParadaOnibus(models.Model):
     endereco = models.CharField(max_length=200)
     rotas = models.ManyToManyField(Rota, related_name='pontos')
-    latitude = models.FloatField(default=0.0)
-    longitude = models.FloatField(default=0.0)
-    coordenadas = models.PointField(srid=4326)
+    coordenadas = models.PointField(default= Point(0.0, 0.0), srid=4326)
 
     def __str__(self):
         return self.endereco
@@ -31,7 +30,7 @@ class CategoriaMarco(models.Model):
 class Local(models.Model):
     nome = models.CharField(max_length=200)
     endereco = models.CharField(max_length=300)
-    coordenadas = models.PointField(srid=4326)
+    coordenadas = models.PointField(default=Point(0.0, 0.0), srid=4326)
     e_marco = models.BooleanField(default=False, db_index=True)
     tipo_marco = models.ManyToManyField(CategoriaMarco, blank=True, related_name='locais')
 
@@ -39,7 +38,7 @@ class Local(models.Model):
         verbose_name = "Local"
         verbose_name_plural = "Locais"
         indexes = [
-            models.Index(fields=['e_marco', 'tipo_marco']),
+            models.Index(fields=['e_marco',]),
         ]
 
     def __str__(self):
