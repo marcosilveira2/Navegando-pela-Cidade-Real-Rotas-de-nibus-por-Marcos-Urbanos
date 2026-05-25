@@ -40,8 +40,9 @@ MARIADB_PASSWORD=
 
 Com o Docker instalado, execute o comando abaixo para baixar as imagens e iniciar o MariaDB e o Django:
 Bash
-
+```bash
 docker-compose up --build
+```
 
 ### 5. Executar as Migrações do Banco
 
