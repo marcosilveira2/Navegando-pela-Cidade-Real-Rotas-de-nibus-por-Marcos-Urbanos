@@ -1,4 +1,4 @@
-from django.db import models
+from django.contrib.gis.db import models
 
 # Models que definem o banco de dados
 
@@ -15,6 +15,7 @@ class ParadaOnibus(models.Model):
     rotas = models.ManyToManyField(Rota, related_name='pontos')
     latitude = models.FloatField(default=0.0)
     longitude = models.FloatField(default=0.0)
+    coordenadas = models.PointField(srid=4326)
 
     def __str__(self):
         return self.endereco
@@ -26,6 +27,23 @@ class CategoriaMarco(models.Model):
 
     def __str__(self):
         return self.nome
+
+class Local(models.Model):
+    nome = models.CharField(max_length=200)
+    endereco = models.CharField(max_length=300)
+    coordenadas = models.PointField(srid=4326)
+    e_marco = models.BooleanField(default=False, db_index=True)
+    tipo_marco = models.ManyToManyField(CategoriaMarco, blank=True, related_name='locais')
+
+    class Meta:
+        verbose_name = "Local"
+        verbose_name_plural = "Locais"
+        indexes = [
+            models.Index(fields=['e_marco', 'tipo_marco']),
+        ]
+
+    def __str__(self):
+        return f"{self.nome} ({'Marco' if self.e_marco else 'Comum'})"
 
 
 
