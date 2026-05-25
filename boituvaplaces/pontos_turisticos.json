@@ -1,0 +1,119 @@
+[
+    {
+        "Ponto Turístico": "Centro Nacional De Paraquedismo",
+        "Endereço": "Avenida Industrial, 1215 - Campo de Boituva",
+        "Descrição": "Maior centro de paraquedismo da América Latina. É o principal atrativo de adrenalina da cidade, com saltos duplos (tandem) a mais de 3.600m de altura.",
+        "lat": -23.2974441,
+        "lon": -47.6819239,
+        "distancia_rodoviaria_km": 1.6175193948388296,
+        "distancia_terminal_km": 1.62
+    },
+    {
+        "Ponto Turístico": "Passeio De Balão Boituva",
+        "Endereço": "Rua Domingos Waldemar Belluci, 15 - Campo Boituva",
+        "Descrição": "Um dos pontos mais icônicos de Boituva. Voo ao amanhecer com vista panorâmica da região (dura cerca de 40-60 minutos).",
+        "lat": -23.298145442324863,
+        "lon": -47.67002110184461,
+        "distancia_rodoviaria_km": 1.549210366954004,
+        "distancia_terminal_km": 1.55
+    },
+    {
+        "Ponto Turístico": "Parque Ecológico Eugênio Walter",
+        "Endereço": "Avenida Pedro Eid, s/n - Parque Ecológico",
+        "Descrição": "Um dos mais visitados. Tem áreas verdes, lago com pedalinho, tirolesa, arvorismo, playground e um pequeno zoológico com animais resgatados.",
+        "lat": -23.296397076509315,
+        "lon": -47.65508988466022,
+        "distancia_rodoviaria_km": 2.3452414117465996,
+        "distancia_terminal_km": 2.35
+    },
+    {
+        "Ponto Turístico": "Parque Da Cidade Egídio Labronici",
+        "Endereço": "Rua José Amádio, 110 - Jardim Preana",
+        "Descrição": "Espaço verde com playground, áreas para piquenique e lazer em família. Ótimo para relaxar.",
+        "lat": -23.290128423941844,
+        "lon": -47.67182748939359,
+        "distancia_rodoviaria_km": 0.6483348948006652,
+        "distancia_terminal_km": 0.65
+    },
+    {
+        "Ponto Turístico": "Museu Do Tropeiro",
+        "Endereço": "Estrada Municipal Laércio Marson, 140 - Jerivá",
+        "Descrição": "Um mergulho nacultura e história do interior paulista",
+        "lat": -23.26582223323343,
+        "lon": -47.705445520073866,
+        "distancia_rodoviaria_km": 3.819775196327162,
+        "distancia_terminal_km": 3.82
+    },
+    {
+        "Ponto Turístico": "Estação Ferroviária De Boituva",
+        "Endereço": "Vila Genasial - Terminal Rodoviário",
+        "Descrição": null,
+        "lat": -23.2838223082466,
+        "lon": -47.675728164247964,
+        "distancia_rodoviaria_km": 0.18409493227648976,
+        "distancia_terminal_km": 0.18
+    },
+    {
+        "Ponto Turístico": "Pesqueiro Ommas",
+        "Endereço": "Estrada Fazenda do Pinhal, 3549",
+        "Descrição": "Local de pesca esportiva com lagos",
+        "lat": -23.330801950679906,
+        "lon": -47.63797354706199,
+        "distancia_rodoviaria_km": 6.308680614952166,
+        "distancia_terminal_km": 6.31
+    },
+    {
+        "Ponto Turístico": "Bar Zé Da Varge",
+        "Endereço": "Avenida Trancredo Neves, 01 - Centro",
+        "Descrição": null,
+        "lat": -23.28408638421743,
+        "lon": -47.67632393293304,
+        "distancia_rodoviaria_km": 0.22767079097785256,
+        "distancia_terminal_km": 0.23
+    },
+    {
+        "Ponto Turístico": "Cachaçaria 3 Coroneis",
+        "Endereço": "Fazenda Pinhal",
+        "Descrição": null,
+        "lat": -23.3327949,
+        "lon": -47.6402575,
+        "distancia_rodoviaria_km": 6.358065424179297,
+        "distancia_terminal_km": 6.36
+    },
+    {
+        "Ponto Turístico": "Igreja Matriz De São Roque",
+        "Endereço": "Rua São João, 43 - Vila Ferriello",
+        "Descrição": null,
+        "lat": -23.2827288,
+        "lon": -47.6722435,
+        "distancia_rodoviaria_km": 0.29618102652909234,
+        "distancia_terminal_km": 0.3
+    },
+    {
+        "Ponto Turístico": "Feira Da Lua",
+        "Endereço": "Rua Aliídio A. Rosa, Avenida Alfredo Satorelli",
+        "Descrição": "Artesanato e Comida",
+        "lat": -23.27902481024736,
+        "lon": -47.660192812415644,
+        "distancia_rodoviaria_km": 1.564823947232836,
+        "distancia_terminal_km": 1.56
+    },
+    {
+        "Ponto Turístico": "Pesqueiro Boitupesca",
+        "Endereço": "Estrada Boituva, KM 22",
+        "Descrição": null,
+        "lat": -23.3330975,
+        "lon": -47.639955,
+        "distancia_rodoviaria_km": 6.403039063966171,
+        "distancia_terminal_km": 6.4
+    },
+    {
+        "Ponto Turístico": "Cachaçaria Zé Da Varge",
+        "Endereço": "Estrada Municiapla José Soares Coelho",
+        "Descrição": "Famoso Alambique Artesanal e moda de Viola",
+        "lat": -23.3241291541471,
+        "lon": -47.719576077741785,
+        "distancia_rodoviaria_km": 6.372783241682082,
+        "distancia_terminal_km": 6.37
+    }
+]

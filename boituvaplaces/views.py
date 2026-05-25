@@ -14,10 +14,12 @@ def index(request):
     url_rotas = request.build_absolute_uri(reverse("importa_rotas"))
     url_pontos = request.build_absolute_uri(reverse("importa_pontos"))
     url_locais = request.build_absolute_uri(reverse("importa_locais"))
+    url_marcos = request.build_absolute_uri(reverse("importa_marco"))
     link_rotas = f'<li><a href="{url_rotas}">importa_rotas</a></li>'
     link_pontos = f'<li><a href="{url_pontos}">importa_pontos</a></li>'
     link_locais = f'<li><a href="{url_locais}">importa_locais</a></li>'
-    html_simples += f'{link_rotas} {link_pontos} {link_locais}</ul>'
+    link_marcos = f'<li><a href="{url_marcos}">importa_marco</a></li>'
+    html_simples += f'{link_rotas} {link_pontos} {link_locais} {link_marcos}</ul>'
     return HttpResponse(html_simples)
 
 
@@ -80,9 +82,7 @@ def importa_pontos(request):
 
 def importa_locais(request):
     locais = importador("lista_de_locais_1.json")
-    resposta = type(locais)
     for local in locais:
-        print(local['tipo'])
         lng = local['lng']
         lat = local['lat']
         ponto_geometrico = Point(lng, lat, srid=4326)
@@ -98,6 +98,46 @@ def importa_locais(request):
             print(f"adicionado{local['nome']}")
 
     return HttpResponse("Locais adicionados ao banco de dados!")
+
+
+def marcos_turisticos(request):
+    locais = importador("pontos_turisticos.json")
+
+    try:
+        marco_tur = CategoriaMarco.objects.get(nome="Turístico")
+    except CategoriaMarco.DoesNotExist:
+        return HttpResponse("Erro: A categoria 'Turístico' não existe no banco de dados. Cadastre-a primeiro.")
+
+    for local in locais:
+        lng = local['lon']
+        lat = local['lat']
+        ponto_geometrico = Point(lng, lat, srid=4326)
+
+        nome_local = local.get('Ponto Turístico') or local.get('nome')
+        endereco_local = local.get('Endereço') or local.get('endereco', '')
+
+        local_cidade, created = Local.objects.get_or_create(
+            nome=nome_local,
+            endereco=endereco_local,
+            defaults={
+                "coordenadas": ponto_geometrico,
+                "e_marco": True,
+            }
+        )
+
+        local_cidade.tipo_marco.set([marco_tur])
+
+        if not created:
+            # Se já existia, atualiza os dados caso tenham mudado no JSON
+            local_cidade.endereco = endereco_local
+            local_cidade.coordenadas = ponto_geometrico
+            local_cidade.e_referencia = True
+            local_cidade.save()
+            print(f"Local '{nome_local}' já existia (dados atualizados).")
+        else:
+            print(f"Adicionado: '{nome_local}'")
+
+    return HttpResponse("Locais turísticos importados com sucesso!")
 
 def buscar_proximidades(request):
     query = request.GET.get('q')
