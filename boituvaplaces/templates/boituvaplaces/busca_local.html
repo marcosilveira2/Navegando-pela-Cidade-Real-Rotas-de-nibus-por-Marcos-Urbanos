@@ -40,7 +40,7 @@
             {% if marco_proximo %}
                 <p>
                     <strong>{{ marco_proximo.nome }}</strong> <br>
-                    <span class="distance">Aproximadamente {{ marco_proximo.distancia.m|floatformat:0 }} metros de distância.</span>
+                    <span class="distance">Aproximadamente {{ marco_proximo.distancia_em_metros|floatformat:0 }} metros de distância.</span>
                 </p>
             {% else %}
                 <p>Nenhum marco referencial cadastrado nas proximidades.</p>
@@ -50,7 +50,7 @@
             {% if ponto_proximo %}
                 <p>
                     <strong>{{ ponto_proximo.endereco }}</strong><br>
-                    <span class="distance">Aproximadamente {{ ponto_proximo.distancia.m|floatformat:0 }} metros do seu destino.</span>
+                    <span class="distance">Aproximadamente {{ ponto_proximo.distancia_em_metros|floatformat:0 }} metros do seu destino.</span>
                 </p>
                 <p><strong>Linhas disponíveis neste ponto:</strong></p>
                 <div>
@@ -68,3 +68,5 @@
 
 </body>
 </html>
+
+

@@ -104,29 +104,43 @@ def buscar_proximidades(request):
     context = {'query': query}
 
     if query:
-        # Encontra o local pesquisado (pegando o primeiro resultado que contenha o termo)
         local_pesquisado = Local.objects.filter(nome__icontains=query).first()
 
         if local_pesquisado:
             context['local_pesquisado'] = local_pesquisado
 
-            # Encontra o marco urbano mais próximo
-            # e calcula a distância entre as coordenadas.
+            # Busca no banco de dados usando graus
             marco_proximo = Local.objects.filter(
                 e_marco=True
             ).exclude(
                 id=local_pesquisado.id
             ).annotate(
-                distancia=Distance('coordenadas', local_pesquisado.coordenadas)
-            ).order_by('distancia').first()
+                distancia_graus=Distance('coordenadas', local_pesquisado.coordenadas)
+            ).order_by('distancia_graus').first()
 
-            # Encontra o ponto de ônibus mais próximo
             ponto_proximo = ParadaOnibus.objects.annotate(
-                distancia=Distance('coordenadas', local_pesquisado.coordenadas)
-            ).order_by('distancia').first()
+                distancia_graus=Distance('coordenadas', local_pesquisado.coordenadas)
+            ).order_by('distancia_graus').first()
 
-            context['marco_proximo'] = marco_proximo
-            context['ponto_proximo'] = ponto_proximo
+            # Converte para metros usando o Python
+
+            # Clona as coordenadas para não alterar o objeto original do banco
+            ponto_ref_metros = local_pesquisado.coordenadas.clone()
+            ponto_ref_metros.transform(3857)  # Converte para o sistema de metros
+
+            if marco_proximo:
+                marco_metros = marco_proximo.coordenadas.clone()
+                marco_metros.transform(3857)
+                # Calcula a distância em metros e injeta no objeto
+                marco_proximo.distancia_em_metros = ponto_ref_metros.distance(marco_metros)
+                context['marco_proximo'] = marco_proximo
+
+            if ponto_proximo:
+                ponto_metros = ponto_proximo.coordenadas.clone()
+                ponto_metros.transform(3857)
+                # Calcula a distância em metros e injeta no objeto
+                ponto_proximo.distancia_em_metros = ponto_ref_metros.distance(ponto_metros)
+                context['ponto_proximo'] = ponto_proximo
         else:
             context['erro'] = "Local não encontrado no banco de dados."
 
