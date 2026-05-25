@@ -47,14 +47,14 @@ docker-compose up --build
 
 Em um novo terminal, execute as migrações para criar as tabelas no MariaDB:
 Bash
-
+```bash
 docker-compose exec web python manage.py migrate
-
+```
 ### 6. Criar Usuário Administrador (Opcional)
 
 Para acessar o painel administrativo do Django (http://localhost:8000/admin), crie um superusuário:
 Bash
-
+```bash
 docker-compose exec web python manage.py createsuperuser
-
+```
 O projeto estará disponível em: http://localhost:8000
