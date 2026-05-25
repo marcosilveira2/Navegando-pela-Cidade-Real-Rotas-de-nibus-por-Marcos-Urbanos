@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Busca de Rotas e Marcos</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; color: #333; }
+        .search-box { margin-bottom: 20px; }
+        input[type="text"] { padding: 10px; width: 60%; font-size: 16px; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+        .result-card { border: 1px solid #ddd; padding: 20px; border-radius: 8px; background-color: #f9f9f9; }
+        .distance { color: #666; font-size: 0.9em; }
+        .route-tag { display: inline-block; background: #007bff; color: white; padding: 3px 8px; border-radius: 4px; margin: 2px; font-size: 0.85em; }
+    </style>
+</head>
+<body>
+
+    <h2>Buscar Referências de Ônibus</h2>
+    
+    <div class="search-box">
+        <form method="GET" action="">
+            <label for="q">Para onde você quer ir?</label><br><br>
+            <input type="text" id="q" name="q" value="{{ query|default_if_none:'' }}" placeholder="Ex: Praça da Matriz, Mercado Municipal...">
+            <button type="submit">Pesquisar</button>
+        </form>
+    </div>
+
+    {% if erro %}
+        <p style="color: #dc3545;"><strong>{{ erro }}</strong></p>
+    {% endif %}
+
+    {% if local_pesquisado %}
+        <div class="result-card">
+            <h3>Destino: {{ local_pesquisado.nome }}</h3>
+            <p>📍 {{ local_pesquisado.endereco }}</p>
+
+            <hr style="border: 0; border-top: 1px solid #ccc; margin: 20px 0;">
+
+            <h4>Marco Referencial Mais Próximo:</h4>
+            {% if marco_proximo %}
+                <p>
+                    <strong>{{ marco_proximo.nome }}</strong> <br>
+                    <span class="distance">Aproximadamente {{ marco_proximo.distancia.m|floatformat:0 }} metros de distância.</span>
+                </p>
+            {% else %}
+                <p>Nenhum marco referencial cadastrado nas proximidades.</p>
+            {% endif %}
+
+            <h4>Melhor Ponto de Ônibus:</h4>
+            {% if ponto_proximo %}
+                <p>
+                    <strong>{{ ponto_proximo.endereco }}</strong><br>
+                    <span class="distance">Aproximadamente {{ ponto_proximo.distancia.m|floatformat:0 }} metros do seu destino.</span>
+                </p>
+                <p><strong>Linhas disponíveis neste ponto:</strong></p>
+                <div>
+                    {% for rota in ponto_proximo.rotas.all %}
+                        <span class="route-tag">{{ rota.codigo }} - {{ rota.nome }}</span>
+                    {% empty %}
+                        <span>Nenhuma linha cadastrada para este ponto.</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>Nenhum ponto de ônibus cadastrado nas proximidades.</p>
+            {% endif %}
+        </div>
+    {% endif %}
+
+</body>
+</html>

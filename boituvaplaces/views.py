@@ -4,6 +4,7 @@ from django.urls import get_resolver, reverse
 from boituvaplaces.models import *
 from .import_data import importador
 from django.contrib.gis.geos import Point
+from django.contrib.gis.db.models.functions import Distance
 
 
 # data = importador()
@@ -97,3 +98,36 @@ def importa_locais(request):
             print(f"adicionado{local['nome']}")
 
     return HttpResponse("Locais adicionados ao banco de dados!")
+
+def buscar_proximidades(request):
+    query = request.GET.get('q')
+    context = {'query': query}
+
+    if query:
+        # Encontra o local pesquisado (pegando o primeiro resultado que contenha o termo)
+        local_pesquisado = Local.objects.filter(nome__icontains=query).first()
+
+        if local_pesquisado:
+            context['local_pesquisado'] = local_pesquisado
+
+            # Encontra o marco urbano mais próximo
+            # e calcula a distância entre as coordenadas.
+            marco_proximo = Local.objects.filter(
+                e_marco=True
+            ).exclude(
+                id=local_pesquisado.id
+            ).annotate(
+                distancia=Distance('coordenadas', local_pesquisado.coordenadas)
+            ).order_by('distancia').first()
+
+            # Encontra o ponto de ônibus mais próximo
+            ponto_proximo = ParadaOnibus.objects.annotate(
+                distancia=Distance('coordenadas', local_pesquisado.coordenadas)
+            ).order_by('distancia').first()
+
+            context['marco_proximo'] = marco_proximo
+            context['ponto_proximo'] = ponto_proximo
+        else:
+            context['erro'] = "Local não encontrado no banco de dados."
+
+    return render(request, 'boituvaplaces/busca_local.html', context)
