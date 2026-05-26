@@ -8,25 +8,57 @@
         .search-box { margin-bottom: 20px; }
         input[type="text"] { padding: 10px; width: 60%; font-size: 16px; }
         button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
-        .result-card { border: 1px solid #ddd; padding: 20px; border-radius: 8px; background-color: #f9f9f9; }
+        .result-card { border: 1px solid #ddd; padding: 20px; border-radius: 8px; background-color: #f9f9f9; margin-bottom: 20px; }
         .distance { color: #666; font-size: 0.9em; }
         .route-tag { display: inline-block; background: #007bff; color: white; padding: 3px 8px; border-radius: 4px; margin: 2px; font-size: 0.85em; }
+
+        /* Estilos para a lista de desambiguação */
+        .choice-list { list-style-type: none; padding: 0; }
+        .choice-item a {
+            display: block;
+            padding: 12px;
+            margin-bottom: 10px;
+            background: #e9ecef;
+            text-decoration: none;
+            color: #333;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            transition: background 0.2s;
+        }
+        .choice-item a:hover { background: #d3d9df; }
     </style>
 </head>
 <body>
 
     <h2>Buscar Referências de Ônibus</h2>
-    
+
     <div class="search-box">
         <form method="GET" action="">
             <label for="q">Para onde você quer ir?</label><br><br>
-            <input type="text" id="q" name="q" value="{{ query|default_if_none:'' }}" placeholder="Ex: Praça da Matriz, Mercado Municipal...">
+            <input type="text" id="q" name="q" value="{{ query|default_if_none:'' }}" placeholder="Ex: Mercado, Praça...">
             <button type="submit">Pesquisar</button>
         </form>
     </div>
 
     {% if erro %}
         <p style="color: #dc3545;"><strong>{{ erro }}</strong></p>
+    {% endif %}
+
+    {% if locais_multiplos %}
+        <div class="result-card">
+            <h3>Encontramos mais de um local para "{{ query }}".</h3>
+            <p>Por favor, selecione o destino correto:</p>
+            <ul class="choice-list">
+                {% for local in locais_multiplos %}
+                    <li class="choice-item">
+                        <a href="?q={{ query|urlencode }}&local_id={{ local.id }}">
+                            <strong>{{ local.nome }}</strong><br>
+                            <span style="font-size: 0.85em; color: #666;">📍 {{ local.endereco }}</span>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
     {% endif %}
 
     {% if local_pesquisado %}
@@ -68,5 +100,3 @@
 
 </body>
 </html>
-
-
