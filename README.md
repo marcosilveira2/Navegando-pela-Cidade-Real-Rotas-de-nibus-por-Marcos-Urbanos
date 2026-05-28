@@ -1,7 +1,7 @@
 # 🏛️ Boituva Landmarks
 Navegando-pela-Cidade-Real-Rotas-de-Ônibus-por-Marcos-Urbanos
 
-Este é um projeto desenvolvido em Django para mapear e gerenciar os pontos turísticos e históricos de Boituva. O projeto utiliza Docker para facilitar o ambiente de desenvolvimento entre a equipe.
+Este é um projeto desenvolvido em Django para mapear e gerenciar os Marcos Urbanos de Boituva. O projeto utiliza Docker para facilitar o ambiente de desenvolvimento entre a equipe.
 
 ## 🚀 Como Rodar o Projeto Localmente
 
